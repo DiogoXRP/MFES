@@ -1,0 +1,24 @@
+class Shape
+	types
+		public Tetrominoes = <NoShape> | <ZShape> | <SShape> | <LineShape> |
+		 <TShape> | <SquareShape> | <LShape> | <MirroredLShape>;
+		public pieceCoordinates = seq of int;
+		
+	values
+-- TODO Define values here
+	instance variables
+		private pieceShape: Tetrominoes;
+		public totalCoordinates: seq of pieceCoordinates;
+		public boardCoordinates: seq of seq of seq of int;
+			
+	operations
+		public Shape: () ==> Shape
+		Shape() == (totalCoordinates := []; setShape(Tetrominoes.NoShape); return self)
+		post len totalCoordinates = 4 and len pieceCoordinates = 2
+		
+
+	functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Shape
