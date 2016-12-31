@@ -1,0 +1,97 @@
+class Piece
+	types
+		public Tetrominoes = <NoShape> | <ZShape> | <SShape> | <LineShape> |
+		 <TShape> | <SquareShape> | <LShape> | <MirroredLShape>;
+		public Orientation = <NORTH> | <EAST> | <SOUTH> | <WEST>;
+	values
+		public PieceSize = 4;
+		static orientation_shifts : inmap Orientation to (seq1 of int) = {
+		<NORTH>	|-> [ 0,-1],
+		<EAST>	|-> [+1, 0],
+		<SOUTH>	|-> [ 0,+1],
+		<WEST>	|-> [-1, 0]
+	};
+
+	instance variables
+		protected size: nat1;
+		public tetromino: Tetrominoes;
+		protected pivot: Game`Position;
+		protected orientation: Orientation;
+		/*private pieceShape: Tetrominoes;
+		public pieceCoordinates: seq of seq of int;
+		public GamePieceCoordinates: seq of seq of seq of int;
+		inv len pieceCoordinates = 4;*/
+		--public pieceCoordinates: seq of Piece`Position;
+		inv PieceSize < Game`SizeY and PieceSize < Game`SizeX;
+			
+	operations
+		public Piece : Game`Position * Orientation * nat1 ==> Piece
+			Piece(p, o, s) == (
+				pivot := p;
+				orientation := o;
+				size := s;
+				return self)
+				pre (
+		(p.x + orientation_shifts(o)(1) * (s - 1)) in set {1, ..., Game`SizeX} and (p.y + orientation_shifts(o)(2) * (s - 1)) in set {1, ..., Game`SizeY}
+ 	);
+ 		public pure getPieceCoordinates : () ==> seq1 of Game`Position
+ 	getPieceCoordinates() == (
+ 		dcl positions : seq1 of Game`Position := [pivot];
+ 		for i = 1 to size - 1 by 1 do (
+ 			positions := positions ^ [mk_Game`Position(
+ 				pivot.x + orientation_shifts(orientation)(1) * i,
+ 				pivot.y + orientation_shifts(orientation)(2) * i
+ 			)];
+ 		);
+ 		return positions;
+ 	);
+			
+				
+				
+		/*public getPieceCoordinates: () ==> seq of Piece`Position
+			getPieceCoordinates() == (return pieceCoordinates;);
+		public getShapeType: () ==> Tetrominoes
+			getShapeType() == (return tetromino;);
+		public Piece : nat * nat ==> Piece
+			Piece(x,y) == (pieceCoordinates := []; position := mk_Position(x,y););
+		public SetX: nat ==> () 
+			SetX(x) == (position.x := x;); 
+		public SetY : nat ==> ()
+			SetY(y) == (position.y := y;); 
+		public GetX : () ==> nat
+			GetX() == (return position.x;);
+		public GetY : () ==> nat
+			GetY() == (return position.y;);*/
+		/*public Shape: () ==> Shape
+		Shape() == (pieceCoordinates := [[0,0],[0,0],[0,0],[0,0]]; setShape(<NoShape>); return self);
+		
+		public setShape: Tetrominoes ==> ()
+		setShape(shape) == (
+		GamePieceCoordinates := [
+            [ [ 0, 0 ],   [ 0, 0 ],   [ 0, 0 ],   [ 0, 0 ] ],
+            [ [ 0, -1 ],  [ 0, 0 ],   [ -1, 0 ],  [ -1, 1 ] ],
+            [ [ 0, -1 ],  [ 0, 0 ],   [ 1, 0 ],   [ 1, 1 ] ],
+            [ [ 0, -1 ],  [ 0, 0 ],   [ 0, 1 ],   [ 0, 2 ] ],
+            [ [ -1, 0 ],  [ 0, 0 ],   [ 1, 0 ],   [ 0, 1 ] ],
+            [ [ 0, 0 ],   [ 1, 0 ],   [ 0, 1 ],   [ 1, 1 ] ],
+            [ [ -1, -1 ], [ 0, -1 ],  [ 0, 0 ],   [ 0, 1 ] ],
+            [ [ 1, -1 ],  [ 0, -1 ],  [ 0, 0 ],   [ 0, 1 ] ]
+    ];
+    for i = 0 to 3 do (
+    	for j = 0 to 1 do (
+    		pieceCoordinates(mk_(i,j)) := GamePieceCoordinates(mk_(tetromino(1), i, j));
+    		);
+    );
+        
+    )*/
+      
+      
+
+	functions
+		
+			
+			
+			
+traces
+-- TODO Define Combinatorial Test Traces here
+end Piece

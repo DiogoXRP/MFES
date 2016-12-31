@@ -1,0 +1,34 @@
+class Board
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+
+
+operations
+-- TODO Define operations here
+public pure getPositions: () ==> seq of Game`Position 
+		getPositions() == (
+			return [];
+		);
+
+public generateRandomPiece: () ==> Piece
+	generateRandomPiece() == (
+		MATH`rand(7)+1;
+	);
+
+public add: Game`Position ==> ()
+	add(p) == is not yet specified;
+	
+	public add: Piece ==> ()
+	add(p) == is not yet specified;
+	
+	public draw : () ==> ()
+		draw() == is not yet specified; 
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Board
