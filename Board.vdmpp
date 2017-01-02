@@ -1,32 +1,73 @@
 class Board
 types
--- TODO Define types here
+	
 values
--- TODO Define values here
+	public boardWidth = 10;
+	public boardHeight = 22;
 instance variables
--- TODO Define instance variables here
-
+	public isFallingFinished : bool := false;
+	public isStarted : bool := false;
+	public isPaused : bool := false;
+	public numLinesRemoved : int := 0;
+	public curX : int := 0;
+	public curY : int := 0;
+	public curPiece : Shape;
+	public board : seq of Shape`Tetrominoes;
 
 operations
--- TODO Define operations here
-public pure getPositions: () ==> seq of Game`Position 
-		getPositions() == (
-			return [];
+	public fill : (seq of Shape`Tetrominoes) ==> seq of Shape`Tetrominoes
+	fill(board) == (
+		for i = 0 to (boardWidth * boardHeight) by 1 do (
+			board(i) := <NoShape>;
 		);
-
-public generateRandomPiece: () ==> Piece
-	generateRandomPiece() == (
-		MATH`rand(7)+1;
+		return board;
 	);
-
-public add: Game`Position ==> ()
-	add(p) == is not yet specified;
+	public Board: Tetris ==> () 
+	Board(parent) == (
+		--setFocusable(true);
+		curPiece := new Shape();
+		--timer = new Timer(400, this);
+		--timer.start();
+		--statusbar =  parent.getStatusBar();
+		board := fill(board);
+		--addKeyListener(new TAdapter());
+		clearBoard();
+	);
 	
-	public add: Piece ==> ()
-	add(p) == is not yet specified;
 	
-	public draw : () ==> ()
-		draw() == is not yet specified; 
+	public clearBoard: () ==> ()
+	clearBoard() == (
+		for i = 0 to (boardWidth * boardHeight) by 1 do (
+			board(i) := <NoShape>;
+		);
+	);
+	
+	public shapeAt: int * int ==> Shape`Tetrominoes
+	shapeAt(x, y) == (
+		return board((y * boardWidth) + x);
+	);
+	
+	private tryMove: Shape * int * int ==> bool
+	tryMove(newPiece, newX, newY) == (
+		for i = 0 to 3 by 1 do (
+			dcl x : int := newX + newPiece.getX(i);
+			dcl y : int := newY - newPiece.getY(i);
+			if x < 0 or x >= boardWidth or y < 0 or y >= boardHeight then return false;
+			if shapeAt(x,y) <> <NoShape> then return false;
+			
+		);
+	curPiece := newPiece;
+	curX := newX;
+	curY := newY;
+	--repaint()
+	return true;
+	);
+	
+	
+	
+	
+	
+	
 functions
 -- TODO Define functiones here
 traces

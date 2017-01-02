@@ -1,0 +1,132 @@
+class Shape
+types
+	public Tetrominoes = <NoShape> | <ZShape> | <SShape> | <LineShape> |
+		 <TShape> | <SquareShape> | <LShape> | <MirroredLShape>;
+values
+	static enumerationValues : inmap Tetrominoes to int = {
+		<NoShape>	|-> 1,
+		<ZShape>	|-> 2,
+		<SShape>	|-> 3,
+		<LineShape>	|-> 4,
+		<TShape> |-> 5,
+		<SquareShape> |-> 6,
+		<LShape> |-> 7,
+		<MirroredLShape> |-> 8
+	};
+instance variables
+	public pieceShape: Tetrominoes;
+  public coords: seq of seq of int;
+  public coordsTable: seq of seq of seq of int;
+operations
+	public Shape : () ==> Shape
+	Shape() == (
+		coords :=[[0,0],[0,0],[0,0],[0,0]];
+		setShape(<NoShape>);
+	);
+	
+	public setShape : Tetrominoes ==> ()
+	setShape(p) == (
+		coordsTable := [
+            [ [ 0, 0 ],   [ 0, 0 ],   [ 0, 0 ],   [ 0, 0 ] ],
+            [ [ 0, -1 ],  [ 0, 0 ],   [ -1, 0 ],  [ -1, 1 ] ],
+            [ [ 0, -1 ],  [ 0, 0 ],   [ 1, 0 ],   [ 1, 1 ] ],
+            [ [ 0, -1 ],  [ 0, 0 ],   [ 0, 1 ],   [ 0, 2 ] ],
+            [ [ -1, 0 ],  [ 0, 0 ],   [ 1, 0 ],   [ 0, 1 ] ],
+            [ [ 0, 0 ],   [ 1, 0 ],   [ 0, 1 ],   [ 1, 1 ] ],
+            [ [ -1, -1 ], [ 0, -1 ],  [ 0, 0 ],   [ 0, 1 ] ],
+            [ [ 1, -1 ],  [ 0, -1 ],  [ 0, 0 ],   [ 0, 1 ] ]
+        ];
+       	for i = 0 to 3 by 1 do (
+       		for j = 0 to 1 by 1 do (
+       			coords(i)(j) := coordsTable(enumerationValues(<NoShape>)(1))(i)(j);
+       		);
+       	);
+    pieceShape := p;
+   	);
+   	
+  private setX : int * int ==> ()
+  setX(index, x) == (
+  	coords(index)(0) := x;
+  );
+  
+  private setY : int * int ==> ()
+  setY(index, y) == (
+  	coords(index)(1) := y;
+  );
+  
+  public getX : nat ==> int
+  getX(index) == (
+  	return coords(index)(0);
+  );
+  
+  public getY : nat ==> int
+  getY(index) == (
+  	return coords(index)(1);
+  );
+  
+  private getMin : int * int ==> int
+  getMin(a,b) == (
+  	if a < b then return a
+  	else
+  		return b;
+  );
+  
+  public getShape : () ==> Tetrominoes
+  getShape() == (
+  	return pieceShape;
+  );
+  
+  public setRandomShape : () ==> ()
+  setRandomShape() == (
+  	dcl shape : Tetrominoes;
+  	dcl x : int := abs(MATH`rand(7)) rem 7 + 1;
+		setShape(enumerationValues(shape)(x));	
+  );
+  
+  public minX : () ==> int
+  minX() == (
+ 		dcl m : int := coords(0)(0);
+ 		for i = 0 to 3 by 1 do (
+ 		m := getMin(m, coords(i)(0));
+ 		);
+ 		return m;
+  );
+  
+  public minY : () ==> int
+  minY() == (
+ 		dcl m : int := coords(0)(1);
+ 		for i = 0 to 3 by 1 do (
+ 		m := getMin(m, coords(i)(1));
+ 		);
+ 		return m;
+  );
+  
+  public rotateLeft : () ==> Shape
+  rotateLeft() == (
+  dcl result : Shape := new Shape();
+  if pieceShape = <SquareShape> then return self;
+  result.pieceShape := pieceShape;
+  for i = 0 to 3 by 1 do (
+  	result.setX(i, getX(i));
+  	result.setY(i, -getY(i));
+  );
+  return result;  
+  );
+  
+  public rotateRight : () ==> Shape
+  rotateRight() == (
+  dcl result : Shape := new Shape();
+  if pieceShape = <SquareShape> then return self;
+  result.pieceShape := pieceShape;
+  for i = 0 to 3 by 1 do (
+  	result.setX(i, -getX(i));
+  	result.setY(i, getY(i));
+  );
+  return result;  
+  );	
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Shape

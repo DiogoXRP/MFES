@@ -1,0 +1,23 @@
+class Tetris
+types
+	
+values
+-- TODO Define values here
+instance variables
+	public board: Board;
+	public game: Tetris;
+operations
+	public Tetris : () ==> ()
+	Tetris() == (
+		board := new Board(self);
+		
+	);
+	public static main: () ==> ()
+	main() == (
+		game := new Tetris();
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Tetris
